@@ -30,11 +30,11 @@ namespace SkillSwapBackend.Controllers
         public IActionResult GetById(int id)
         {
             var skill = _skillService.GetById(id);
-            if(skill == null)
+            if (skill == null)
             {
                 return NotFound();
             }
-            return  Ok(skill);
+            return Ok(skill);
         }
 
         [HttpPost]
@@ -49,6 +49,15 @@ namespace SkillSwapBackend.Controllers
 
             _skillService.AddSkill(skill);
             return Ok("Skill Added");
+        }
+
+        [HttpGet("my")]
+        [Authorize(Roles = "mentor")]
+        public IActionResult GetMySkills()
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var skills = _skillService.GetAll().Where(s => s.MentorEmail == email).ToList();
+            return Ok(skills);
         }
     }
 }

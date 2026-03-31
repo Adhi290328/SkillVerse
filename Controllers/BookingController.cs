@@ -27,17 +27,21 @@ public class BookingController : ControllerBase
         var skill = _context.Skills.FirstOrDefault(s => s.Id == booking.Id);
 
         if (skill == null)
-            return NotFound("Skill not found");
+            return NotFound(new { message = "Skill not found" });
 
         booking.SkillTitle = skill.Title;
         booking.MentorEmail = skill.MentorEmail;
         booking.LearnerEmail = learnerEmail;
-        booking.Status = "pending";
+        booking.Status = BookingStatus.Pending;
 
         _context.Bookings.Add(booking);
         _context.SaveChanges();
 
-        return Ok("Booking Successful");
+        return Ok(new
+        {
+            message = "Booking Successful",
+            Id = booking.Id
+        });
     }
 
     [HttpGet("my")]
@@ -51,7 +55,7 @@ public class BookingController : ControllerBase
 
     [HttpPatch("{id}")]
     [Authorize(Roles = "mentor")]
-    public IActionResult UpdateStatus(int id, [FromBody] string status)
+    public IActionResult UpdateStatus(int id, [FromBody] BookingStatus status)
     {
         var booking = _bookingService.GetById(id);
 
@@ -61,6 +65,15 @@ public class BookingController : ControllerBase
         booking.Status = status;
         _bookingService.UpdateBooking(booking);
 
-        return Ok("Booking Updated");
+        return Ok(new { message = "Booking Updated", status = booking.Status });
+    }
+
+    [HttpGet("mentor")]
+    [Authorize(Roles = "mentor")]
+    public IActionResult MentorBookings()
+    {
+        var email = User.FindFirst(ClaimTypes.Name)?.Value;
+        var bookings = _bookingService.GetBookingsForMentor(email);
+        return Ok(bookings);
     }
 }

@@ -7,7 +7,8 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public string MentorEmail { get; set; }
-
         public double price { get; set; }
+
+        public List<Booking> Bookings { get; set; }
     }
 }

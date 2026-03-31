@@ -7,7 +7,8 @@
         public string? MentorEmail { get; set; }
         public string? SkillTitle { get; set; }
         public DateTime Date { get; set; }
-        public string Status { get; set; } = "pending";
+        public BookingStatus Status { get; set; }
 
+        public Skill Skill { get; set; } //this is for navigaton property
     }
 }

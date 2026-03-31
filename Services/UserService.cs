@@ -3,7 +3,7 @@ using SkillSwapBackend.Data;
 
 namespace SkillSwapBackend.Services
 {
-    public class UserService
+    public class UserService : IUserServices
     {
         private readonly AppDbContext _context;
         

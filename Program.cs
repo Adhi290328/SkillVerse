@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IUserServices, UserService>();
 builder.Services.AddScoped<SkillService>();
 builder.Services.AddScoped<BookingService>();
 

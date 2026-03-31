@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkillSwapBackend.Data;
 
@@ -11,9 +12,11 @@ using SkillSwapBackend.Data;
 namespace SkillSwapBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260330043347_UpdateBookingStatusEnum")]
+    partial class UpdateBookingStatusEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +42,6 @@ namespace SkillSwapBackend.Migrations
                     b.Property<string>("MentorEmail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SkillTitle")
                         .HasColumnType("nvarchar(max)");
 
@@ -49,8 +49,6 @@ namespace SkillSwapBackend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SkillId");
 
                     b.ToTable("Bookings");
                 });
@@ -114,22 +112,6 @@ namespace SkillSwapBackend.Migrations
                     b.HasKey("id");
 
                     b.ToTable("users");
-                });
-
-            modelBuilder.Entity("SkillSwapBackend.Models.Booking", b =>
-                {
-                    b.HasOne("SkillSwapBackend.Models.Skill", "Skill")
-                        .WithMany("Bookings")
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Skill");
-                });
-
-            modelBuilder.Entity("SkillSwapBackend.Models.Skill", b =>
-                {
-                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }
